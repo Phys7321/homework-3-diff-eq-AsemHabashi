@@ -1,6 +1,6 @@
-function [period,sol,KE,PE,E] = pendulum_modified(omega0,theta0,thetad0,grph) 
-% Finds the period of a nonlinear pendulum given the length of the pendulum
-% arm and initial conditions. All angles in radians.
+function [period,sol,KE,PE,E] = pendulum_damped_eventsadded(omega0,gama,theta0,thetad0,grph) 
+% Finds the period of a nonlinear damped pendulum given the length of the 
+% pendulum arm and initial conditions. All angles in radians.
 
 %Setting initial conditions
 if nargin==0
@@ -18,20 +18,25 @@ end
 if nargin==3
     grph=1;
 end
+if nargin==4
+    grph=1;
+end
+
 m=1;
 g=9.81;
 R=g/omega0^2;
 %omega = sqrt(g/R);
 T= 2*pi/omega0;
 % number of oscillations to graph
-N = 200;
+N = 15;
 
 
 tspan = [0 N*T];
 %opts = odeset('events',@events,'refine',6); %Here for future event finder
+
 opts = odeset('refine',6);
 r0 = [theta0 thetad0];
-[t,w] = ode45(@proj,tspan,r0,opts,g,R,m);
+[t,w] = ode45(@proj,tspan,r0,opts,g,R,gama,m);
 sol = [t,w];
 ind= find(w(:,2).*circshift(w(:,2), [-1 0]) <= 0);
 ind = chop(ind,4);
@@ -70,7 +75,13 @@ E=KE+PE;
 end
 %-------------------------------------------
 %
-function rdot = proj(t,r,g,R,m)
-    rdot = [r(2); -g/R*sin(r(1))];
+function rdot = proj(t,r,g,R,gama,m)
+    rdot = [r(2); -gama/m*r(2)-g/R*sin(r(1))];
 end
+
+function [position,isterminal,direction] = appleEventsFcn(t,y)
+position = r(1); % The value that we want to be zero
+isterminal = 1;  % Halt integration 
+direction = 0;   % The zero can be approached from either direction
+
 

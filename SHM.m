@@ -24,18 +24,19 @@ R=g/omega0^2;
 %omega = sqrt(g/R);
 T= 2*pi/omega0;
 % number of oscillations to graph
-N = 1;
+N = 200;
 
 
 tspan = [0 N*T];
 %opts = odeset('events',@events,'refine',6); %Here for future event finder
 opts = odeset('refine',6);
 r0 = [theta0 thetad0];
-[t,w] = ode45(@proj,tspan,r0,opts,g,R);
+[t,w] = ode45(@proj,tspan,r0,opts,g,R,m);
 sol = [t,w];
 ind= find(w(:,2).*circshift(w(:,2), [-1 0]) <= 0);
 ind = chop(ind,4);
 period= 2*mean(diff(t(ind)));
+
 
 % Small-angle approximation solution
 delta = atan(theta0/(omega0*thetad0));
@@ -55,12 +56,20 @@ if grph % Plot Solutions of exact and small angle
     xlabel('t')
     ylabel( '\Delta\phi')
 end
-KE=0.5*m.*w(:,2).*w(:,2);
-PE=0.5*m*omega0^2.*w(:,1).*w(:,1);
+
+%this is to output a reasonable number of cycles:
+time=floor(5*T);
+index=find(t<=time);
+index=max(index);
+sol=sol(1:index,1:3);
+
+KE=0.5*m.*sol(:,3).*sol(:,3);
+PE=0.5*m*omega0^2.*sol(:,2).*sol(:,2);
 E=KE+PE;
+
 end
 %-------------------------------------------
 %
-function rdot = proj(t,r,g,R)
+function rdot = proj(t,r,g,R,m)
     rdot = [r(2); -g/R*r(1)];
 end
