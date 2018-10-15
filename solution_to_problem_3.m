@@ -64,7 +64,6 @@ for i = 1:4
     avgE=mean(E);
     avgE_pend(i)=avgE;
     T_pend(i)=period;
-    k=k+1;
 end
 
 title('part(b): angle vs time');
