@@ -102,7 +102,9 @@ xlabel('damping coefficient');
 ylabel('Energy');
 legend('avgKE_damp','avgKE_nondamp','avgPE_damp','avgPE_nondamp','avgE_damp','avgE_nondamp');
 
-%need to check why the energies for the nondamped case differ!!! 
+%it can be seen that the all average energies decrease with damping during
+%one period, but for the undamped case, the average energies are constant
+%over all cycles.
 
 %part(d):
 

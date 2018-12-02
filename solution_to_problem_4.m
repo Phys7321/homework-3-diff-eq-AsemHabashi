@@ -85,12 +85,16 @@ for i = 1:10
     t=sol(:,1);
     x=sol(:,2);
     ind= find(sol(:,3).*circshift(sol(:,3), [-1 0]) <= 0);
-    maximum=length(ind);
+    maximum=floor(length(ind)/5);
     ind = ind(10:maximum);
     t=t(ind);
-    deltas=pi*ceil(Omega*t/pi)-Omega*t;
-    Delta=mean(deltas)/pi;
-    delta(i)=Delta;
+    dt=t(2:end)-t(1:end-1);
+    T=mean(dt);
+    Delta=((t(1)/T)-floor(t(1)/T))*T*Omega;
+    delta(i)=Delta/pi;
+   % deltas=pi*ceil(Omega*t/pi)-Omega*t;
+   % Delta=mean(deltas)/pi;
+   % delta(i)=Delta;
 end
 
 figure(5)
@@ -106,20 +110,26 @@ for i = 1:10
     t=sol(:,1);
     x=sol(:,2);
     ind= find(sol(:,3).*circshift(sol(:,3), [-1 0]) <= 0);
-    maximum=length(ind);
+    maximum=floor(length(ind)/5);
     ind = ind(10:maximum);
     t=t(ind);
-    deltas=pi*ceil(Omega*t/pi)-Omega*t;
-    Delta=mean(deltas)/pi;
-    delta(i)=Delta;
+    dt=t(2:end)-t(1:end-1);
+    T=mean(dt);
+    Delta=((t(1)/T)-floor(t(1)/T))*T*Omega;
+    delta(i)=Delta/pi;
+    
 end
 
 plot(omega,delta);
 legend('gamma=0.5','gamma=1.5');
 
-% it seems that delta decreases in both cases! I expected that it should
-% increase until near omega =3 ( which is omega0) where suddenly jumps near
-% pi, but may be the reason is in the non linearity of the pendulum !? 
+% as can be seen from the plot where delta/pi is presented on the y axis, 
+% the phase increases slowly with increasing the frequency up until when  
+% the driving frequency hits the natural frequency omega=3, where the phase
+% angle will be pi/2, and it increases after that slowly again. 
+
+% the spike for gamma = 0.5 at frequency =2 is unexpected, may be due to 
+% the nonlinearity of the pendulum !? 
 
 
 
