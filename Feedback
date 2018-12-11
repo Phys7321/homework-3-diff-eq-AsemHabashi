@@ -1,3 +1,6 @@
 10.29
 Problem 1 and 2 look good. Your problems start in #3, where your event handler is not working, I get an error when trying to run this program. In problem 4 I'm not sure you're calculating the frequency dependence on damping correctly AND I'm not sure about your delta calculation - I have to think about this some more honestly - you can convince me that you're right if you want. You also run into some problems in 5. I'm getting an error in the *max(A,[],'all')* lines, check the options there. Also, one of my big points I want to get across is in MATLAB there usually are more efficient measures to use other than for loops. The array indexing in MATLAB is powerful, use it. I think there are a few more things to do in Problem 5 too.
 The heat visualizations look good, but you're missing the last 2 bar example
+
+12.11
+The event handler is still not working, I get an error. Your phase angle calculations appear a little better. problem #5, however, errors and I don't get all the output from it. Though, your explanations leads me to believe that you can get it to run just fine.  The heat flow scripts look good.
